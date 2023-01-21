@@ -1,0 +1,25 @@
+kind: pipeline
+type: docker
+name: BUILD
+
+steps:
+  - name: Build
+    image: alcapone1933/docker-dind:debian
+    privileged: true
+      DOCKER_USER:
+        from_secret: DOCKER_USER
+      DOCKER_PASS:
+        from_secret: DOCKER_PASS
+    commands:
+      - nohup /usr/local/bin/dockerd-entrypoint.sh >/dev/null 2>&1 &
+      - sleep 5
+      - docker info
+      - echo $DOCKER_PASS | docker login --username $DOCKER_USER --password-stdin
+      - apt-get update && apt-get install -yq make
+      - make push
+
+trigger:
+  branch:
+  - master
+  event:
+  - custom

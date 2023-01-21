@@ -1,5 +1,5 @@
 PLUGIN_NAME = alcapone1933plugin/sshfs
-PLUGIN_TAG ?= next
+PLUGIN_TAG ?= latest
 
 all: clean rootfs create
 
